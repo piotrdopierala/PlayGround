@@ -1,14 +1,13 @@
 package pl.dopierala.CodeWars;
 
-import java.util.Arrays;
-import java.util.OptionalInt;
+import java.util.*;
 
 public class SupermarketQueue {
     public static void main(String[] args) {
 
 
-        int[] customers = { 7,4,4,4,6,1};
-        System.out.println(queueTime(customers, 5));
+        int[] customers = {10,2,3,3,3};
+        System.out.println(queueTime3(customers, 2));
     }
 
     public static int queueTime(int[] customers, int noCheckouts) {
@@ -28,8 +27,10 @@ public class SupermarketQueue {
                     if (checkouts[i] == 0) {
                         checkouts[i] = customers[cusIndex];
                         cusIndex++;
-                        if(cusIndex>=customers.length)
-                            break;
+                        if(cusIndex>=customers.length) {
+                            min = Arrays.stream(checkouts).max();
+                            return timeWait+min.getAsInt();
+                        }
                     }
                 }
                 min = Arrays.stream(checkouts).min();
@@ -40,6 +41,26 @@ public class SupermarketQueue {
             timeWait += min.getAsInt();
         }
         return 0;
+    }
+
+    public static int queueTime2(int[] customers, int noCheckouts){
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        for (int i = 0; i < noCheckouts; i++) {
+            q.add(0);
+        }
+        for (int customer : customers) {
+            q.add(q.remove()+customer);
+        }
+        return Collections.max(q);
+    }
+
+    public static int queueTime3(int[] customers,int noCheckouts){
+        int[] checkouts = new int[noCheckouts];
+        for (int i = 0; i < customers.length; i++) {
+            checkouts[0]+=customers[i];
+            Arrays.sort(checkouts);
+        }
+        return checkouts[noCheckouts-1];
     }
 
 }
