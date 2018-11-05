@@ -1,3 +1,5 @@
+package pl.dopierala.SortWithPreservedIndex;
+
 public class NoObject implements Comparable<NoObject> {
     Integer index;
     Double  value;
